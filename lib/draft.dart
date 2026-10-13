@@ -1,9 +1,8 @@
+import 'package:dreams/maker/sqlt3.dart';
 import 'package:flutter/material.dart';
 
-import 'dart:async';
-import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
+import 'models/draft_model.dart';
+import 'maker/sqlt3.dart';
 
 class Draft extends StatefulWidget {
 	const Draft({super.key});
@@ -14,19 +13,22 @@ class Draft extends StatefulWidget {
 
 class DraftView extends State<Draft> {
 
- 	final theForm = GlobalKey<FormState>();
+	SQLlt3 sqLlt3 = SQLlt3();
+
+	final draftForm = GlobalKey<FormState>();
+	final draftModel = DraftModel();
 
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
 			appBar: AppBar(
-				title: const Text('¿Qué soñe?'),
-				backgroundColor: Colors.deepPurple[200],
+			title: const Text('¿Qué soñe?'),
+			backgroundColor: Colors.deepPurple[200],
 			),
 			body: Padding(
 				padding: const EdgeInsets.all(16.0),
 				child: Form(
-					key: theForm,
+					key: draftForm,
 					child: ListView(
 						children: [
 							TextFormField(
@@ -43,8 +45,8 @@ class DraftView extends State<Draft> {
 							const SizedBox(height: 20),
 							ElevatedButton(
 								onPressed: () {
-									if (theForm.currentState!.validate()) {
-										// PROCESS DATA
+									if (draftForm.currentState!.validate()) {
+										getDrafts();
 									}
 								},
 								child: const Icon(Icons.save),
@@ -54,6 +56,13 @@ class DraftView extends State<Draft> {
 				),
 			),
 		);
+	}
+
+	getDrafts () async {
+		var db = await sqLlt3.getDB();
+		var result = await db.query('drafts');
+		print("Results: --> $result");
+		setState(() {});
 	}
 
 }

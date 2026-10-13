@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'home.dart';
 
-void main() {
+Future<void> main() async {
+	WidgetsFlutterBinding.ensureInitialized();
+
 	runApp(const Astral());
 }
 
