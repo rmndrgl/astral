@@ -3,23 +3,36 @@ import 'package:path/path.dart';
 
 class SQLlt3 {
 
+	static final SQLlt3 _instance = SQLlt3._internal();
+
+	Database? _database;
+
+	SQLlt3._internal();
+
+	factory SQLlt3() => _instance;
+
 	final String dbName = 'astral.sqlt3';
 
 	Future<Database> getDB() async {
+		if (_database != null) return _database!;
+
 		String dbPath = await getDatabasesPath();
 		String pathDB = join(dbPath, dbName);
 
-		return await openDatabase(pathDB, version: 1, onCreate: createDB,);
+		_database = await openDatabase(pathDB, version: 1, onCreate: createDB,);
+
+		return _database!;
 	}
 
-	void createDB(Database db, int version) async {
+	Future<void> createDB(Database db, int version) async {
 		await db.execute('''
 			CREATE TABLE "drafts" (
-				uuid	TEXT PRIMARY KEY,
-				draft	TEXT,
-				saved	TEXT,
+				uuid       VARCHAR(255) PRIMARY KEY,
+				draft      TEXT
+				saved      TEXT,
 				created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 				updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+				UNIQUE(uuid)
 			)
 		''');
 	}

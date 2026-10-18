@@ -1,7 +1,6 @@
-import 'package:dreams/maker/sqlt3.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 
-import 'models/draft_model.dart';
 import 'maker/sqlt3.dart';
 
 class Draft extends StatefulWidget {
@@ -13,10 +12,7 @@ class Draft extends StatefulWidget {
 
 class DraftView extends State<Draft> {
 
-	SQLlt3 sqLlt3 = SQLlt3();
-
 	final draftForm = GlobalKey<FormState>();
-	final draftModel = DraftModel();
 
 	@override
 	Widget build(BuildContext context) {
@@ -58,11 +54,15 @@ class DraftView extends State<Draft> {
 		);
 	}
 
-	getDrafts () async {
-		var db = await sqLlt3.getDB();
-		var result = await db.query('drafts');
-		print("Results: --> $result");
-		setState(() {});
+	void getDrafts() async {
+		SQLlt3 sqlt = SQLlt3();
+
+		Database db = await sqlt.getDB();
+
+		List<Map<String, dynamic>> resultado = await db.query('drafts');
+
+		debugPrint('Retreving data...');
+		debugPrint(resultado as String?);
 	}
 
 }
