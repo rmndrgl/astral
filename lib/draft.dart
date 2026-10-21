@@ -82,7 +82,7 @@ class DraftView extends State<Draft> {
 			// debugPrint('--> Response...');
 			// debugPrint(response.toString());
 		} else {
-			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home(title: 'Sueños',),),);
+			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Astral(),),);
 
 			Toastify.show(
 				context,

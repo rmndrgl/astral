@@ -35,7 +35,7 @@ class HomeView extends State<Home> {
 					} else if(snapshot.hasError) {
 						return Text('Error: ${snapshot.error}');
 					} else if(!snapshot.hasData || snapshot.data!.isEmpty) {
-						return const Text('No drafts found.');
+						return const Text('Aún no hay sueños guardados!');
 					}
 
 					final drafts = snapshot.data!;
@@ -44,7 +44,33 @@ class HomeView extends State<Home> {
 						itemCount: drafts.length,
 						itemBuilder: (context, index) {
 							final draft = drafts[index];
-							return ListTile(title: Text(draft['draft'] ?? ''), subtitle: Text(draft['saved'] ?? ''),);
+							return Card(
+								child: Column(
+									mainAxisSize: .min,
+										children: <Widget>[
+											ListTile(
+												leading: Icon(Icons.album),
+												title: Text(draft['draft']),
+												subtitle: Text(draft['saved']),
+											),
+											Row(
+												mainAxisAlignment: .end,
+												children: <Widget>[
+													TextButton(
+														child: const Text('Editar'),
+														onPressed: () {/*TODO*/},
+													),
+													const SizedBox(width: 8),
+													TextButton(
+														child: const Text('Cumplido/Deja-vu'),
+														onPressed: () {/*TODO */},
+													),
+													const SizedBox(width: 8),
+												],
+											),
+									],
+								),
+							);
 						},
 					);
 				},
