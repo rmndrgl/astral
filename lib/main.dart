@@ -16,7 +16,9 @@ class Astral extends StatelessWidget {
 	Widget build(BuildContext context) {
 		return MaterialApp(
 			title: 'Astral',
-			theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.blueAccent)),
+			theme: ThemeData(
+				colorScheme: .fromSeed(seedColor: Colors.indigo)
+			),
 			home: const Home(title: 'Sueños'),
 			debugShowCheckedModeBanner: false,
 		);

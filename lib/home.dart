@@ -4,9 +4,13 @@ import 'draft.dart';
 
 import 'models/draft_model.dart';
 
+import 'actions/edit.dart';
+import 'actions/dejavu.dart';
+
 class Home extends StatefulWidget {
 	const Home({
-		super.key, required this.title
+		super.key,
+		required this.title
 	});
 
 	final String title;
@@ -25,7 +29,7 @@ class HomeView extends State<Home> {
 		return Scaffold(
 			appBar: AppBar(
 			title: Text(widget.title),
-			backgroundColor: Colors.deepPurple[200],
+			backgroundColor: Colors.indigo,
 			),
 			body: FutureBuilder<List<Map<String, dynamic>>>(
 				future: draftModel.getDrafts(), builder: (context, snapshot) {
@@ -47,27 +51,33 @@ class HomeView extends State<Home> {
 							return Card(
 								child: Column(
 									mainAxisSize: .min,
-										children: <Widget>[
-											ListTile(
-												leading: Icon(Icons.album),
-												title: Text(draft['draft']),
-												subtitle: Text(draft['saved']),
-											),
-											Row(
-												mainAxisAlignment: .end,
-												children: <Widget>[
-													TextButton(
-														child: const Text('Editar'),
-														onPressed: () {/*TODO*/},
-													),
-													const SizedBox(width: 8),
-													TextButton(
-														child: const Text('Cumplido/Deja-vu'),
-														onPressed: () {/*TODO */},
-													),
-													const SizedBox(width: 8),
-												],
-											),
+									children: <Widget>[
+										ListTile(
+											leading: Icon(Icons.album),
+											title: Text(draft['draft']),
+											subtitle: Text(draft['saved']),
+										),
+										Row(
+											mainAxisAlignment: .end,
+											children: <Widget>[
+												TextButton.icon(
+													icon: const Icon(Icons.edit),
+													label: const Text('Editar'),
+													onPressed: () {
+														edit(draft['uuid'].toString());
+													}
+												),
+												const SizedBox(width: 8),
+												TextButton.icon(
+													icon: const Icon(Icons.light),
+													label: const Text('Cumplido/Deja-vu'),
+													onPressed: () {
+														dejavu(draft['uuid'].toString());
+													},
+												),
+												const SizedBox(width: 8),
+											],
+										),
 									],
 								),
 							);
@@ -78,14 +88,38 @@ class HomeView extends State<Home> {
 			floatingActionButton: FloatingActionButton(
 				onPressed: goDraft,
 				tooltip: 'Añadir',
+				backgroundColor: Colors.indigo,
 				child: const Icon(Icons.add),
-				),
+			),
 		);
 
 	}
 
 	void goDraft() {
-		Navigator.push(context, MaterialPageRoute(builder: (context) => Draft(),),);
+		Navigator.push(
+			context,
+			MaterialPageRoute(
+				builder: (context) => Draft(),
+			),
+		);
+	}
+
+	void edit(String id) {
+		Navigator.push(
+			context,
+			MaterialPageRoute(
+				builder: (context) => Edit(title: 'Editar sueño', id: id),
+			),
+		);
+	}
+
+	void dejavu(String id) {
+		Navigator.push(
+			context,
+			MaterialPageRoute(
+				builder: (context) => Dejavu(title: 'Sueño/Advertencia', id: id),
+			),
+		);
 	}
 
 }

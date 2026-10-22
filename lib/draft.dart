@@ -25,7 +25,6 @@ class DraftView extends State<Draft> {
 		return Scaffold(
 			appBar: AppBar(
 				title: const Text('¿Qué soñe?'),
-				backgroundColor: Colors.deepPurple[200],
 			),
 			body: Padding(
 				padding: const EdgeInsets.all(16.0),
@@ -35,7 +34,7 @@ class DraftView extends State<Draft> {
 						children: [
 							TextFormField(
 								controller: draftController,
-								decoration: const InputDecoration(labelText: '¿Que recuerdas?'),
+								decoration: const InputDecoration(labelText: '¿Qué recuerdas?'),
 								maxLines: null,
 								keyboardType: TextInputType.multiline,
 								validator: (value) {
@@ -78,9 +77,6 @@ class DraftView extends State<Draft> {
 				style: ToastStyle.minimal,
 				showProgressBar: true,
 			);
-
-			// debugPrint('--> Response...');
-			// debugPrint(response.toString());
 		} else {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Astral(),),);
 

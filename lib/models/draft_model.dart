@@ -28,4 +28,12 @@ class DraftModel {
 		return result;
 	}
 
+	Future<Map<String, dynamic>?> getDraftByUid(String id) async {
+		final db = await sqlt.getDB();
+
+		final result = await db.query('drafts', where: 'uuid = ?', whereArgs: [id],);
+
+		return result.isNotEmpty ? result.first : null;
+	}
+
 }
