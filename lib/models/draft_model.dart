@@ -36,4 +36,14 @@ class DraftModel {
 		return result.isNotEmpty ? result.first : null;
 	}
 
+	Future<int> editDraftByUid(String id, String draft) async {
+		final db = await sqlt.getDB();
+
+		var data = {
+			'draft': draft
+		};
+
+		return await db.update('drafts', data, where: 'uuid = ?', whereArgs: [id],);
+	}
+
 }
