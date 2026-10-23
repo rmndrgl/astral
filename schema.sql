@@ -1,0 +1,19 @@
+CREATE TABLE drafts (
+	uuid  TEXT PRIMARY KEY,
+	draft TEXT,
+	saved DATETIME,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE(uuid)
+);
+
+CREATE TABLE dejavus (
+	uuid   TEXT PRIMARY KEY,
+	dejavu TEXT,
+	saved  DATETIME,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	uid_draft INT,
+	FOREIGN KEY (uid_draft) REFERENCES drafts(uuid),
+	UNIQUE(uuid)
+);

@@ -46,4 +46,18 @@ class DraftModel {
 		return await db.update('drafts', data, where: 'uuid = ?', whereArgs: [id],);
 	}
 
+	Future<int> saveDejavu(String dejavu, String saved) async {
+		final db = await sqlt.getDB();
+
+		var uuid = const Uuid();
+
+		var data = {
+			'uuid':   uuid.v4(),
+			'dejavu': dejavu,
+			'saved':  saved,
+		};
+
+		return await db.insert('dejavus', data);
+	}
+
 }

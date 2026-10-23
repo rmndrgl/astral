@@ -74,7 +74,7 @@ class EditView extends State<Edit> {
 								ElevatedButton(
 									onPressed: () async {
 										if (draftForm.currentState!.validate()) {
-											saveEditedDraft(snapshot.data!['uuid'], snapshot.data!['draft']);
+											saveEditedDraft(snapshot.data!['uuid'], draftController.text);
 										}
 									},
 									child: const Icon(Icons.edit),
