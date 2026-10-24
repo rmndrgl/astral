@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:my_toastify/my_toastify.dart';
 
-import '../models/draft_model.dart';
+import 'package:dreams/main.dart';
 
-import '../main.dart';
+import 'package:dreams/models/draft_model.dart';
+import 'package:dreams/models/dejavu_model.dart';
 
-class Edit extends StatefulWidget {
-	const Edit({
+class DejavuView extends StatefulWidget {
+	const DejavuView({
 		super.key,
 		required this.title,
 		required this.id,
@@ -17,18 +18,20 @@ class Edit extends StatefulWidget {
 	final String id;
 
 	@override
-	State<Edit> createState() => EditView();
+	State<DejavuView> createState() => View();
 }
 
-class EditView extends State<Edit> {
+class View extends State<DejavuView> {
 
-	DraftModel draftModel = DraftModel();
+	final dejavuForm = GlobalKey<FormState>();
 
-	final draftForm = GlobalKey<FormState>();
+	DraftModel draftModel   = DraftModel();
+	DejavuModel dejavuModel = DejavuModel();
 
-	final draftUuidController  = TextEditingController();
-	final draftController      = TextEditingController();
-	final draftSavedController = TextEditingController();
+	final uidDraftController = TextEditingController();
+	final draftController    = TextEditingController();
+	final savedController    = TextEditingController();
+	final dejavuController   = TextEditingController();
 
 	@override
 	Widget build(BuildContext context) {
@@ -47,34 +50,43 @@ class EditView extends State<Edit> {
 					return const Text('No hay nada que coincida');
 				}
 
-				draftUuidController.text  = snapshot.data!['uuid'];
+				uidDraftController.text  = snapshot.data!['uuid'];
 				draftController.text      = snapshot.data!['draft'];
-				draftSavedController.text = snapshot.data!['saved'];
+				savedController.text = snapshot.data!['saved'];
 
 				return Padding(
 					padding: const EdgeInsets.all(16.0),
 					child: Form(
-						key: draftForm,
+						key: dejavuForm,
 						child: ListView(
 							children: [
 								TextFormField(
-									controller: draftUuidController,
+									controller: uidDraftController,
 									readOnly: true,
 								),
 								TextFormField(
 									controller: draftController,
 									maxLines: null,
-									keyboardType: TextInputType.multiline,
+									readOnly: true,
 								),
 								TextFormField(
-									controller: draftSavedController,
+									controller: savedController,
 									readOnly: true,
+								),
+								TextFormField(
+									controller: dejavuController,
+									maxLines: null,
+									keyboardType: TextInputType.multiline,
+									decoration: const InputDecoration(
+										border: UnderlineInputBorder(),
+										labelText: '¿Qué paso que lo recorde?',
+									),
 								),
 								const SizedBox(height: 20),
 								ElevatedButton(
 									onPressed: () async {
-										if (draftForm.currentState!.validate()) {
-											saveEditedDraft(snapshot.data!['uuid'], draftController.text);
+										if (dejavuForm.currentState!.validate()) {
+											saveDejavuAndGoHome(uidDraftController.text, dejavuController.text);
 										}
 									},
 									child: const Icon(Icons.edit),
@@ -87,17 +99,20 @@ class EditView extends State<Edit> {
 		);
 	}
 
-	void saveEditedDraft(String id, String draft) async {
-		int response = await draftModel.editDraftByUid(id, draft);
+	void saveDejavuAndGoHome(String uidDraft, String dejavu) async {
 
-		if (response > 0) {
+		String currentDateTime = DateTime.now().toString();
+
+		int response = await dejavuModel.saveDejavu(uidDraft, dejavu, currentDateTime);
+
+		if(response > 0) {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Astral(),),);
 
 			Toastify.show(
 				context,
 				title: 'Ok',
-				message: 'Sueño astral modificado con éxito!',
-				type: ToastType.warning,
+				message: 'Dejavu guardado con éxito!',
+				type: ToastType.success,
 				style: ToastStyle.minimal,
 				showProgressBar: true,
 			);
@@ -107,7 +122,7 @@ class EditView extends State<Edit> {
 			Toastify.show(
 				context,
 				title: 'Fallo!',
-				message: 'Algo paso al guardar el sueño astral!',
+				message: 'Algo paso al guardar el dejavu!',
 				type: ToastType.error,
 				style: ToastStyle.minimal,
 				showProgressBar: true,

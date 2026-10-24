@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
-import 'draft.dart';
+import 'package:dreams/views/draft_view.dart';
+import 'package:dreams/views/dejavu_view.dart';
 
-import 'models/draft_model.dart';
+import 'package:dreams/models/draft_model.dart';
+import 'package:dreams/models/dejavu_model.dart';
 
-import 'actions/edit.dart';
-import 'actions/dejavu.dart';
+//import 'package:dreams/entities/draft_entity.dart';
+//import 'package:dreams/entities/dejavu_entity.dart';
+
+import 'package:dreams/actions/edit_draft.dart';
+//import 'package:dreams/actions/edit_dejavu.dart';
 
 class Home extends StatefulWidget {
 	const Home({
@@ -21,7 +26,10 @@ class Home extends StatefulWidget {
 
 class HomeView extends State<Home> {
 
-	DraftModel draftModel = DraftModel();
+	DraftModel draftModel   = DraftModel();
+	DejavuModel dejavuModel = DejavuModel();
+
+	bool showCard = false;
 
 	@override
 	Widget build(BuildContext context) {
@@ -43,6 +51,7 @@ class HomeView extends State<Home> {
 					}
 
 					final drafts = snapshot.data!;
+					//chechData();
 
 					return ListView.builder(
 						itemCount: drafts.length,
@@ -64,7 +73,7 @@ class HomeView extends State<Home> {
 													icon: const Icon(Icons.edit),
 													label: const Text('Editar'),
 													onPressed: () {
-														edit(draft['uuid'].toString());
+														goEditDraftView(draft['uuid'].toString());
 													}
 												),
 												const SizedBox(width: 8),
@@ -72,12 +81,28 @@ class HomeView extends State<Home> {
 													icon: const Icon(Icons.light),
 													label: const Text('Cumplido/Deja-vu'),
 													onPressed: () {
-														dejavu(draft['uuid'].toString());
+														goDejavuView(draft['uuid'].toString());
+													},
+												),
+												const SizedBox(width: 8),
+												TextButton.icon(
+													icon: const Icon(Icons.remove_red_eye_outlined),
+													label: const Text('Ver'),
+													onPressed: () {
+														showCard = true;
 													},
 												),
 												const SizedBox(width: 8),
 											],
 										),
+										if(showCard)
+											Row(
+												mainAxisAlignment: .end,
+												children: <Widget>[
+													Text("Hola $draft['uuid'].toString()"),
+												]
+											),
+											//showDejavu1x1Draft(draft['uuid'].toString())
 									],
 								),
 							);
@@ -86,40 +111,44 @@ class HomeView extends State<Home> {
 				},
 			),
 			floatingActionButton: FloatingActionButton(
-				onPressed: goDraft,
+				onPressed: goToAddDraft,
 				tooltip: 'Añadir',
-				backgroundColor: Colors.indigo,
+				backgroundColor: Colors.blue,
 				child: const Icon(Icons.add),
 			),
 		);
 
 	}
 
-	void goDraft() {
+	void goToAddDraft() {
 		Navigator.push(
 			context,
 			MaterialPageRoute(
-				builder: (context) => Draft(),
+				builder: (context) => DraftView(),
 			),
 		);
 	}
 
-	void edit(String id) {
+	void goEditDraftView(String id) {
 		Navigator.push(
 			context,
 			MaterialPageRoute(
-				builder: (context) => Edit(title: 'Editar sueño', id: id),
+				builder: (context) => EditDraftView(title: 'Editar sueño', id: id),
 			),
 		);
 	}
 
-	void dejavu(String id) {
+	void goDejavuView(String id) {
 		Navigator.push(
 			context,
 			MaterialPageRoute(
-				builder: (context) => Dejavu(title: 'Sueño/Advertencia', id: id),
+				builder: (context) => DejavuView(title: 'Sueño/Advertencia', id: id),
 			),
 		);
+	}
+
+	void showDejavu1x1Draft(String uidDraft) async {
+		await dejavuModel.getDejavuByUid(uidDraft);
 	}
 
 }

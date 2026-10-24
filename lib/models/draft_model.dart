@@ -1,6 +1,8 @@
 import 'package:uuid/uuid.dart';
 
-import '../maker/sqlt3.dart';
+import 'package:dreams/maker/sqlt3.dart';
+
+import 'package:dreams/entities/draft_entity.dart';
 
 class DraftModel {
 
@@ -46,18 +48,21 @@ class DraftModel {
 		return await db.update('drafts', data, where: 'uuid = ?', whereArgs: [id],);
 	}
 
-	Future<int> saveDejavu(String dejavu, String saved) async {
+	Future<List<DraftEntity>> checkData() async {
 		final db = await sqlt.getDB();
 
-		var uuid = const Uuid();
+		final List<Map<String, Object?>> draftsMap = await db.query('drafts');
 
-		var data = {
-			'uuid':   uuid.v4(),
-			'dejavu': dejavu,
-			'saved':  saved,
-		};
-
-		return await db.insert('dejavus', data);
+		return [
+			for (
+				final {
+					'uuid':  uuid  as String,
+					'draft': draft as String,
+					'saved': saved as String,
+				} in draftsMap
+			)
+			DraftEntity(uuid: uuid, draft: draft, saved: saved),
+		];
 	}
 
 }

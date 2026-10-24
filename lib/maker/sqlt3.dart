@@ -4,13 +4,13 @@ import 'package:path/path.dart';
 
 class SQLlt3 {
 
-	static final SQLlt3 _instance = SQLlt3._internal();
+	static final SQLlt3 instance = SQLlt3._internal();
 
 	Database? db;
 
 	SQLlt3._internal();
 
-	factory SQLlt3() => _instance;
+	factory SQLlt3() => instance;
 
 	final String dbName = 'astral.sqlt3';
 
@@ -21,8 +21,15 @@ class SQLlt3 {
 		String pathDB = join(dbPath, dbName);
 
 		db = await openDatabase(pathDB, version: 1, onCreate: createDB, onConfigure: configureDB);
+		// onUpgrade: upgradeVersionDB
 
 		return db!;
+	}
+
+	Future<void> upgradeVersionDB(Database db, oldVersion, newVersion) async {
+		if(newVersion > oldVersion) {
+			// await db.execute();
+		}
 	}
 
 	Future<void> createDB(Database db, int version) async {
@@ -46,8 +53,8 @@ class SQLlt3 {
 				created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 				updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 				uid_draft TEXT,
-				FOREIGN KEY (uid_draft) REFERENCES drafts(uuid),
-				UNIQUE(uuid)
+				FOREIGN KEY (uid_draft) REFERENCES drafts(uuid) ON DELETE CASCADE ON UPDATE CASCADE,
+				UNIQUE(uid_draft)
 			);
 		''');
 

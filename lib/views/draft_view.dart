@@ -6,18 +6,18 @@ import 'package:dreams/main.dart';
 
 import 'package:dreams/models/draft_model.dart';
 
-class Draft extends StatefulWidget {
-	const Draft({super.key});
+class DraftView extends StatefulWidget {
+	const DraftView({super.key});
 
 	@override
-	State<Draft> createState() => DraftView();
+	State<DraftView> createState() => View();
 }
 
-class DraftView extends State<Draft> {
-
-	DraftModel draftModel = DraftModel();
+class View extends State<DraftView> {
 
 	final draftForm = GlobalKey<FormState>();
+
+	DraftModel draftModel = DraftModel();
 
 	final draftController = TextEditingController();
 

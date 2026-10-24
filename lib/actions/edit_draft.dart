@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:my_toastify/my_toastify.dart';
 
-import '../models/draft_model.dart';
+import 'package:dreams/main.dart';
 
-import '../main.dart';
+import 'package:dreams/models/draft_model.dart';
 
-class Dejavu extends StatefulWidget {
-	const Dejavu({
+class EditDraftView extends StatefulWidget {
+	const EditDraftView({
 		super.key,
 		required this.title,
 		required this.id,
@@ -17,10 +17,10 @@ class Dejavu extends StatefulWidget {
 	final String id;
 
 	@override
-	State<Dejavu> createState() => DejavuView();
+	State<EditDraftView> createState() => View();
 }
 
-class DejavuView extends State<Dejavu> {
+class View extends State<EditDraftView> {
 
 	DraftModel draftModel = DraftModel();
 
@@ -29,7 +29,6 @@ class DejavuView extends State<Dejavu> {
 	final draftUuidController  = TextEditingController();
 	final draftController      = TextEditingController();
 	final draftSavedController = TextEditingController();
-	final dejavuController     = TextEditingController();
 
 	@override
 	Widget build(BuildContext context) {
@@ -65,26 +64,17 @@ class DejavuView extends State<Dejavu> {
 								TextFormField(
 									controller: draftController,
 									maxLines: null,
-									readOnly: true,
+									keyboardType: TextInputType.multiline,
 								),
 								TextFormField(
 									controller: draftSavedController,
 									readOnly: true,
 								),
-								TextFormField(
-									controller: dejavuController,
-									maxLines: null,
-									keyboardType: TextInputType.multiline,
-									decoration: const InputDecoration(
-										border: UnderlineInputBorder(),
-										labelText: '¿Qué paso que lo recorde?',
-									),
-								),
 								const SizedBox(height: 20),
 								ElevatedButton(
 									onPressed: () async {
 										if (draftForm.currentState!.validate()) {
-											saveDejavuAndGoHome(dejavuController.text);
+											saveEditedDraft(snapshot.data!['uuid'], draftController.text);
 										}
 									},
 									child: const Icon(Icons.edit),
@@ -97,20 +87,17 @@ class DejavuView extends State<Dejavu> {
 		);
 	}
 
-	void saveDejavuAndGoHome(String dejavuu) async {
+	void saveEditedDraft(String id, String draft) async {
+		int response = await draftModel.editDraftByUid(id, draft);
 
-		String currentDateTime = DateTime.now().toString();
-
-		int response = await draftModel.saveDejavu(dejavuu, currentDateTime);
-
-		if(response > 0) {
+		if (response > 0) {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Astral(),),);
 
 			Toastify.show(
 				context,
 				title: 'Ok',
-				message: 'Dejavu guardado con éxito!',
-				type: ToastType.success,
+				message: 'Sueño astral modificado con éxito!',
+				type: ToastType.warning,
 				style: ToastStyle.minimal,
 				showProgressBar: true,
 			);
@@ -120,7 +107,7 @@ class DejavuView extends State<Dejavu> {
 			Toastify.show(
 				context,
 				title: 'Fallo!',
-				message: 'Algo paso al guardar el dejavu!',
+				message: 'Algo paso al guardar el sueño astral!',
 				type: ToastType.error,
 				style: ToastStyle.minimal,
 				showProgressBar: true,

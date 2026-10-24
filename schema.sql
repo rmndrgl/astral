@@ -13,7 +13,7 @@ CREATE TABLE dejavus (
 	saved  DATETIME,
 	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
 	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-	uid_draft INT,
-	FOREIGN KEY (uid_draft) REFERENCES drafts(uuid),
-	UNIQUE(uuid)
+	uid_draft TEXT,
+	FOREIGN KEY (uid_draft) REFERENCES drafts(uuid) ON DELETE CASCADE ON UPDATE CASCADE,
+	UNIQUE(uid_draft)
 );
