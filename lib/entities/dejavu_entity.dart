@@ -5,27 +5,36 @@ class DejavuEntity {
 	final String uuid;
 	final String dejavu;
 	final String saved;
-	final String uidDraft;
+	final String iddraft;
 
 	DejavuEntity({
 		required this.uuid,
 		required this.dejavu,
 		required this.saved,
-		required this.uidDraft
+		required this.iddraft
 	});
+
+	factory DejavuEntity.fromMap(Map<String, dynamic> map) {
+		return DejavuEntity(
+			uuid:    map['uuid']    as String,
+			dejavu:  map['dejavu']  as String,
+			saved:   map['saved']   as String,
+			iddraft: map['iddraft'] as String,
+		);
+	}
 
 	Map<String, Object?> toMap() {
 		return {
-			'uuid': uuid,
-			'dejavu': dejavu,
-			'saved': saved,
-			'uid_draft': uidDraft,
+			'uuid':    uuid,
+			'dejavu':  dejavu,
+			'saved':   saved,
+			'iddraft': iddraft,
 		};
 	}
 
 	@override
-		String toString() {
-			return 'Dejavu {uuid: $uuid, dejavu: $dejavu, saved: $saved, uid_draft: $uidDraft}';
+	String toString() {
+		return 'Dejavu {uuid: $uuid, dejavu: $dejavu, saved: $saved, iddraft: $iddraft}';
 	}
 
 }

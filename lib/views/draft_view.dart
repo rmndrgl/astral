@@ -4,7 +4,11 @@ import 'package:my_toastify/my_toastify.dart';
 
 import 'package:dreams/main.dart';
 
+import 'package:uuid/uuid.dart';
+
 import 'package:dreams/models/draft_model.dart';
+
+import 'package:dreams/entities/draft_entity.dart';
 
 class DraftView extends StatefulWidget {
 	const DraftView({super.key});
@@ -63,9 +67,15 @@ class View extends State<DraftView> {
 
 	Future<void> saveDraftAndGoHome() async {
 
-		String currentDateTime = DateTime.now().toString();
+		var uuid = const Uuid();
 
-		int response = await draftModel.saveDraft(draftController.text, currentDateTime);
+		DraftEntity draftEntity = DraftEntity(
+			uuid:  uuid.v4(),
+			draft: draftController.text,
+			saved: DateTime.now().toString(),
+		);
+
+		int response = await draftModel.saveDraft(draftEntity);
 
 		if (response > 0) {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Astral(),),);

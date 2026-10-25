@@ -4,8 +4,12 @@ import 'package:my_toastify/my_toastify.dart';
 
 import 'package:dreams/main.dart';
 
+import 'package:uuid/uuid.dart';
+
 import 'package:dreams/models/draft_model.dart';
 import 'package:dreams/models/dejavu_model.dart';
+
+import 'package:dreams/entities/dejavu_entity.dart';
 
 class DejavuView extends StatefulWidget {
 	const DejavuView({
@@ -86,7 +90,7 @@ class View extends State<DejavuView> {
 								ElevatedButton(
 									onPressed: () async {
 										if (dejavuForm.currentState!.validate()) {
-											saveDejavuAndGoHome(uidDraftController.text, dejavuController.text);
+											saveDejavuAndGoHome();
 										}
 									},
 									child: const Icon(Icons.edit),
@@ -99,11 +103,18 @@ class View extends State<DejavuView> {
 		);
 	}
 
-	void saveDejavuAndGoHome(String uidDraft, String dejavu) async {
+	Future<void> saveDejavuAndGoHome() async {
 
-		String currentDateTime = DateTime.now().toString();
+		var uuid = const Uuid();
 
-		int response = await dejavuModel.saveDejavu(uidDraft, dejavu, currentDateTime);
+		DejavuEntity dejavuEntity = DejavuEntity(
+			uuid:    uuid.v4(),
+			dejavu:  dejavuController.text,
+			saved:   DateTime.now().toString(),
+			iddraft: uidDraftController.text,
+		);
+
+		int response = await dejavuModel.saveDejavu(dejavuEntity);
 
 		if(response > 0) {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Astral(),),);
