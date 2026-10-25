@@ -41,8 +41,7 @@ class View extends State<DejavuView> {
 	Widget build(BuildContext context) {
 		return Scaffold(
 			appBar: AppBar(
-			title: Text(widget.title),
-			backgroundColor: Colors.indigo,
+				title: Text(widget.title),
 			),
 			body: FutureBuilder<Map<String, dynamic>?>(future: draftModel.getDraftByUid(widget.id), builder: (context, snapshot) {
 

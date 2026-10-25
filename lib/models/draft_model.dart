@@ -17,18 +17,9 @@ class DraftModel {
 	Future<List<DraftEntity>> getDrafts() async {
 		final db = await sqlt.getDB();
 
-		final List<Map<String, Object?>> dejavusMap = await db.query('dejavus',);
+		final List<Map<String, Object?>> draftsMap = await db.query('drafts',);
 
-		return [
-			for (
-				final {
-					'uuid':  uuid  as String,
-					'draft': draft as String,
-					'saved': saved as String,
-				} in dejavusMap
-			)
-			DraftEntity(uuid: uuid, draft: draft, saved: saved),
-		];
+		return draftsMap.map((map) => DraftEntity.fromMap(map)).toList();
 	}
 
 	Future<Map<String, dynamic>?> getDraftByUid(String id) async {

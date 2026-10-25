@@ -22,9 +22,9 @@ class DejavuModel {
 		return [
 			for (
 				final {
-					'uuid':      uuid     as String,
-					'dejavu':    dejavu   as String,
-					'saved':     saved    as String,
+					'uuid':    uuid    as String,
+					'dejavu':  dejavu  as String,
+					'saved':   saved   as String,
 					'iddraft': iddraft as String
 				} in dejavusMap
 			)

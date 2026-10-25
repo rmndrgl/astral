@@ -10,14 +10,18 @@ Future<void> main() async {
 
 class Astral extends StatelessWidget {
 
-	const Astral({super.key});
+	const Astral({
+		super.key
+	});
 
 	@override
 	Widget build(BuildContext context) {
 		return MaterialApp(
 			title: 'Astral',
 			theme: ThemeData(
-				colorScheme: .fromSeed(seedColor: Colors.teal)
+				appBarTheme: const AppBarTheme(backgroundColor: Colors.cyan,),
+				colorScheme: .fromSeed(seedColor: Colors.teal),
+				useMaterial3: true,
 			),
 			home: const Home(title: 'Sueños'),
 			debugShowCheckedModeBanner: false,
