@@ -11,7 +11,7 @@ class DejavuEntity {
 		required this.uuid,
 		required this.dejavu,
 		required this.saved,
-		required this.iddraft
+		required this.iddraft,
 	});
 
 	factory DejavuEntity.fromMap(Map<String, dynamic> map) {
@@ -34,7 +34,7 @@ class DejavuEntity {
 
 	@override
 	String toString() {
-		return 'Dejavu {uuid: $uuid, dejavu: $dejavu, saved: $saved, iddraft: $iddraft}';
+		return 'Dejavu {uuid: $uuid, dejavu: $dejavu, saved: $saved, iddraft: $iddraft,}';
 	}
 
 }

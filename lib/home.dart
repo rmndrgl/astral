@@ -6,10 +6,9 @@ import 'package:dreams/views/dejavu_view.dart';
 import 'package:dreams/models/draft_model.dart';
 import 'package:dreams/models/draftdejavu_model.dart';
 
-import 'package:dreams/entities/draft_entity.dart';
-
 import 'package:dreams/actions/edit_draft.dart';
-import 'package:dreams/actions/edit_dejavu.dart';
+
+import 'package:dreams/entities/draftdejavu_entity.dart';
 
 import 'package:dreams/menu/settings.dart';
 
@@ -58,27 +57,38 @@ class View extends State<Home> {
 				if(snapshot.connectionState == ConnectionState.waiting) {
 					return const CircularProgressIndicator();
 				} else if(snapshot.hasError) {
-					return Text('Error: ${snapshot.error}');
+					return Center(
+						child: Text('Error: ${snapshot.error}',
+							style: TextStyle(fontSize: 24),
+						)
+					);
 				} else if(!snapshot.hasData || snapshot.data!.isEmpty) {
-					return const Text('Aún no hay sueños guardados!');
+					return Center(
+						child: Text('Aún no hay sueños guardados!',
+							style: TextStyle(fontSize: 24)
+						),
+					);
 				}
 
-				final List<DraftEntity> draftsEntities = snapshot.data!;
+				final List<DraftDejavuEntity> ddEntities = snapshot.data!;
 
 				return ListView.builder(
 
-					itemCount: draftsEntities.length,
+					itemCount: ddEntities.length,
 					itemBuilder: (context, index) {
 
-						final DraftEntity draftEntity = draftsEntities[index];
+						final DraftDejavuEntity ddEntity = ddEntities[index];
 
 						return Card(
 							child: Column(
 								mainAxisSize: .min,
 								children: <Widget>[
 									ListTile(
-										title: Text(draftEntity.draft),
-										subtitle: Text(draftEntity.saved),
+										title: Text(ddEntity.draft),
+										subtitle: Text(ddEntity.saved),
+									),
+									ListTile(
+										title: Text(ddEntity.dejavu),
 									),
 									Row(
 										mainAxisAlignment: .end,
@@ -87,7 +97,7 @@ class View extends State<Home> {
 												icon: const Icon(Icons.edit),
 												label: const Text('Editar'),
 												onPressed: () {
-													goEditDraftView(draftEntity.uuid);
+													goEditDraftView(ddEntity.uuid);
 												}
 											),
 											const SizedBox(width: 8),
@@ -95,7 +105,7 @@ class View extends State<Home> {
 												icon: const Icon(Icons.light),
 												label: const Text('Cumplido/Deja-vu'),
 												onPressed: () {
-													goDejavuView(draftEntity.uuid);
+													goDejavuView(ddEntity.uuid);
 												},
 											),
 											const SizedBox(width: 8),
@@ -110,7 +120,7 @@ class View extends State<Home> {
 			floatingActionButton: FloatingActionButton(
 				onPressed: goToAddDraft,
 				tooltip: 'Añadir',
-				backgroundColor: Colors.tealAccent,
+				backgroundColor: Colors.orange,
 				child: const Icon(Icons.add),
 			),//ENDS BUTTON
 		);//ENDS SCAFFOLD

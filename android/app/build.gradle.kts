@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.dreams"
+    namespace = "org.redhat.astral"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -14,7 +14,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.dreams"
+        applicationId = "org.redhat.astral"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

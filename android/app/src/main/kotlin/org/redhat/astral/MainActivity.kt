@@ -1,4 +1,4 @@
-package com.example.dreams
+package org.redhat.astral;
 
 import io.flutter.embedding.android.FlutterActivity
 

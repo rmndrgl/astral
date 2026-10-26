@@ -20,7 +20,7 @@ class DraftDejavuEntity {
 			uuid:   map['uuid']   as String,
 			draft:  map['draft']  as String,
 			saved:  map['saved']  as String,
-			dejavu: map['dejavu'] as String
+			dejavu: map['dejavu'] as String,
 		);
 	}
 
@@ -31,6 +31,11 @@ class DraftDejavuEntity {
 			'saved':  saved,
 			'dejavu': dejavu,
 		};
+	}
+
+	@override
+	String toString() {
+		return 'Draft/Dejavu {uuid: $uuid, draft: $draft, saved: $saved, dejavu: $dejavu,}';
 	}
 
 }
