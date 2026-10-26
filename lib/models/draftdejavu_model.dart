@@ -1,5 +1,3 @@
-import 'package:sqflite/sqflite.dart';
-
 import 'package:dreams/maker/sqlt3.dart';
 
 import 'package:dreams/entities/draftdejavu_entity.dart';
@@ -11,7 +9,7 @@ class DraftDejavuModel {
 	Future<List<DraftDejavuEntity>> getDD() async {
 		final db = await sqlt.getDB();
 
-		final List<Map<String, Object?>> draftdejavuMap = await db.rawQuery('SELECT drft.uuid, drft.draft, drft.saved, djvs.dejavu FROM drafts AS drft INNER JOIN dejavus AS djvs ON drft.uuid = djvs.iddraft',);
+		final List<Map<String, Object?>> mapDraftDejavu = await db.rawQuery('SELECT drft.uuid, drft.draft, drft.saved, djvs.dejavu FROM drafts AS drft INNER JOIN dejavus AS djvs ON drft.uuid = djvs.iddraft',);
 
 		return [
 			for (
@@ -20,7 +18,7 @@ class DraftDejavuModel {
 					'draft':  draft  as String,
 					'saved':  saved  as String,
 					'dejavu': dejavu as String
-				} in draftdejavuMap
+				} in mapDraftDejavu
 			)
 			DraftDejavuEntity(uuid: uuid, draft: draft, saved: saved, dejavu: dejavu),
 		];

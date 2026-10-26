@@ -4,62 +4,56 @@ import 'package:dreams/views/draft_view.dart';
 import 'package:dreams/views/dejavu_view.dart';
 
 import 'package:dreams/models/draft_model.dart';
-import 'package:dreams/models/dejavu_model.dart';
 import 'package:dreams/models/draftdejavu_model.dart';
 
 import 'package:dreams/entities/draft_entity.dart';
-import 'package:dreams/entities/dejavu_entity.dart';
-import 'package:dreams/entities/draftdejavu_entity.dart';
 
 import 'package:dreams/actions/edit_draft.dart';
 import 'package:dreams/actions/edit_dejavu.dart';
 
+import 'package:dreams/menu/settings.dart';
+
 class Home extends StatefulWidget {
 	const Home({
-		super.key,
-		required this.title
+		super.key
 	});
 
-	final String title;
-
 	@override
-	State<Home> createState() => HomeView();
+	State<Home> createState() => View();
 }
 
-class HomeView extends State<Home> {
+class View extends State<Home> {
 
-	DraftModel draftModel   = DraftModel();
+	DraftModel draftModel    = DraftModel();
 	DraftDejavuModel ddModel = DraftDejavuModel();
-
-	@override
-	void initState() {
-		super.initState();
-
-		showDejavuDraft();
-	}
 
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
 			appBar: AppBar(
-				title: Text(widget.title),
+				title: Text('Sueños'),
 				actions: [
 					PopupMenuButton(
 						onSelected: (value) {
-							debugPrint('Click menu');
-						},
+							Navigator.push(
+								context,
+								MaterialPageRoute(
+									builder: (context) => Settings(),
+								),
+							);//ENDS
+						},//ENDS ONSELECTED
 						itemBuilder: (context) => [
 							const PopupMenuItem<int>(
 								value: 1,
-								child: Text('Config'),
-							),
-						],
-						icon: const Icon(Icons.settings),
-					)
-				],
-			),// ENDS APPBAR
+								child: Icon(Icons.settings),
+							),//ENDS POPUPMENUITEM
+						],// ENDS ITEMBIULDER
+						icon: const Icon(Icons.more_vert),
+					),//ENDS POPUPMENUBUTTON
+				],//ENDS ACTIONS
+			),//ENDS APPBAR
 
-			body: FutureBuilder<List<DraftEntity>>(future: draftModel.getDrafts(), builder: (context, snapshot) {
+			body: FutureBuilder<List<DraftDejavuEntity>>(future: ddModel.getDD(), builder: (context, snapshot) {
 
 				if(snapshot.connectionState == ConnectionState.waiting) {
 					return const CircularProgressIndicator();
@@ -105,27 +99,22 @@ class HomeView extends State<Home> {
 												},
 											),
 											const SizedBox(width: 8),
-										],
-									),
-
-								], //ENDS LISTTITLE | ENDS ROW
+										],//ENDS CHILDREN
+									),//ENDS ROW
+								],//ENDS LISTTITLE | ENDS ROW
 							),//ENDS COLUMN
-						); //ENDS CARD
-
-					}, //ENDS ITEMBIULDER
-				); //ENDS LISTVIEW
+						);//ENDS CARD
+					},//ENDS ITEMBIULDER
+				);//ENDS LISTVIEW
 			},),//ENDS BODY
-
 			floatingActionButton: FloatingActionButton(
 				onPressed: goToAddDraft,
 				tooltip: 'Añadir',
-				backgroundColor: Colors.teal,
+				backgroundColor: Colors.tealAccent,
 				child: const Icon(Icons.add),
-			), //ENDS BUTTON
-
-		); //ENDS SCAFFOLD
-
-	} //ENDS @OVERRIDE WIDGET
+			),//ENDS BUTTON
+		);//ENDS SCAFFOLD
+	}//ENDS @OVERRIDE WIDGET
 
 	void goToAddDraft() {
 		Navigator.push(
@@ -152,20 +141,6 @@ class HomeView extends State<Home> {
 				builder: (context) => DejavuView(title: 'Sueño/Advertencia', id: uuid),
 			),
 		);
-	}
-
-	Future<void> showDejavuDraft() async {
-		List<DraftDejavuEntity> dd = await ddModel.getDD();
-
-		if(dd.isEmpty) {
-			debugPrint('###################################################');
-			debugPrint('Join vacio!');
-		} else {
-			for (var element in dd) {
-				debugPrint('###################################################');
-				debugPrint(element.toString());
-			}
-		}
 	}
 
 }

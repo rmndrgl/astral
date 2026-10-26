@@ -75,13 +75,7 @@ class View extends State<DraftView> {
 			saved: DateTime.now().toString(),
 		);
 
-		debugPrint('###################################################');
-		debugPrint(draftEntity.toString());
-
 		int response = await draftModel.saveDraft(draftEntity);
-
-		debugPrint('###################################################');
-		debugPrint(response.toString());
 
 		if (response > 0) {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Astral(),),);

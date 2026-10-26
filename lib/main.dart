@@ -9,7 +9,6 @@ Future<void> main() async {
 }
 
 class Astral extends StatelessWidget {
-
 	const Astral({
 		super.key
 	});
@@ -19,13 +18,16 @@ class Astral extends StatelessWidget {
 		return MaterialApp(
 			title: 'Astral',
 			theme: ThemeData(
-				appBarTheme: const AppBarTheme(backgroundColor: Colors.cyan,),
-				colorScheme: .fromSeed(seedColor: Colors.teal),
+				appBarTheme: const AppBarTheme(
+					backgroundColor: Colors.cyan,
+				),
+				colorScheme: .fromSeed(
+					seedColor: Colors.teal
+				),
 				useMaterial3: true,
 			),
-			home: const Home(title: 'Sueños'),
+			home: const Home(),
 			debugShowCheckedModeBanner: false,
 		);
 	}
-
 }

@@ -1,5 +1,3 @@
-import 'package:sqflite/sqflite.dart';
-
 import 'package:dreams/maker/sqlt3.dart';
 
 import 'package:dreams/entities/draft_entity.dart';
