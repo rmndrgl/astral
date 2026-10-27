@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:my_toastify/my_toastify.dart';
 
-import 'package:dreams/main.dart';
-
 import 'package:uuid/uuid.dart';
+
+import 'package:dreams/main.dart';
 
 import 'package:dreams/models/draft_model.dart';
 
@@ -19,11 +19,13 @@ class DraftView extends StatefulWidget {
 
 class View extends State<DraftView> {
 
-	final draftForm = GlobalKey<FormState>();
-
 	DraftModel draftModel = DraftModel();
 
-	final draftController = TextEditingController();
+	var uuid = const Uuid();
+
+	final formDraft = GlobalKey<FormState>();
+
+	final txtDraft = TextEditingController();
 
 	@override
 	Widget build(BuildContext context) {
@@ -34,11 +36,11 @@ class View extends State<DraftView> {
 			body: Padding(
 				padding: const EdgeInsets.all(16.0),
 				child: Form(
-					key: draftForm,
+					key: formDraft,
 					child: ListView(
 						children: [
 							TextFormField(
-								controller: draftController,
+								controller: txtDraft,
 								decoration: const InputDecoration(labelText: '¿Qué recuerdas?'),
 								maxLines: null,
 								keyboardType: TextInputType.multiline,
@@ -52,7 +54,7 @@ class View extends State<DraftView> {
 							const SizedBox(height: 20),
 							ElevatedButton(
 								onPressed: () async {
-									if (draftForm.currentState!.validate()) {
+									if (formDraft.currentState!.validate()) {
 										saveDraftAndGoHome();
 									}
 								},
@@ -67,12 +69,11 @@ class View extends State<DraftView> {
 
 	Future<void> saveDraftAndGoHome() async {
 
-		var uuid = const Uuid();
-
 		DraftEntity draftEntity = DraftEntity(
-			uuid:  uuid.v4(),
-			draft: draftController.text,
-			saved: DateTime.now().toString(),
+			uuid:   uuid.v4(),
+			draft:  txtDraft.text,
+			dejavu: '',
+			saved:  DateTime.now().toString(),
 		);
 
 		int response = await draftModel.saveDraft(draftEntity);

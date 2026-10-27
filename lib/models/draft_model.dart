@@ -20,22 +20,42 @@ class DraftModel {
 		return draftsMap.map((map) => DraftEntity.fromMap(map)).toList();
 	}
 
-	Future<Map<String, dynamic>?> getDraftByUid(String id) async {
+	Future<Map<String, dynamic>?> getDraftByUid(String uuid) async {
 		final db = await sqlt.getDB();
 
-		final result = await db.query('drafts', where: 'uuid = ?', whereArgs: [id],);
+		final result = await db.query('drafts', where: 'uuid = ?', whereArgs: [uuid],);
 
 		return result.isNotEmpty ? result.first : null;
 	}
 
-	Future<int> editDraftByUid(String id, String draft) async {
+	Future<int> editDraftByUid(String uuid, String draft) async {
 		final db = await sqlt.getDB();
 
 		var data = {
 			'draft': draft
 		};
 
-		return await db.update('drafts', data, where: 'uuid = ?', whereArgs: [id],);
+		return await db.update('drafts', data, where: 'uuid = ?', whereArgs: [uuid],);
 	}
+
+	/*
+	Future<Map<String, dynamic>?> getDejavuByUid(String uuid) async {
+		final db = await sqlt.getDB();
+
+		final result = await db.query('drafts', where: 'uuid = ?', whereArgs: [uuid],);
+
+		return result.isNotEmpty ? result.first : null;
+	}
+
+	Future<int> editDejavuByUid(String uuid, String draft) async {
+		final db = await sqlt.getDB();
+
+		var data = {
+			'draft': draft
+		};
+
+		return await db.update('drafts', data, where: 'uuid = ?', whereArgs: [uuid],);
+	}
+	*/
 
 }

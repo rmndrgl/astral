@@ -46,7 +46,3 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
-
-# Code notes
-notes.txt
-astral.sqlt3

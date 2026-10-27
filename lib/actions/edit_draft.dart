@@ -24,57 +24,67 @@ class View extends State<EditDraftView> {
 
 	DraftModel draftModel = DraftModel();
 
-	final draftForm = GlobalKey<FormState>();
+	final formDraft = GlobalKey<FormState>();
 
-	final draftUuidController  = TextEditingController();
-	final draftController      = TextEditingController();
-	final draftSavedController = TextEditingController();
+	final txtUuid  = TextEditingController();
+	final txtDraft = TextEditingController();
+	final txtSaved = TextEditingController();
 
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
 			appBar: AppBar(
-			title: Text(widget.title),
-			backgroundColor: Colors.indigo,
+				title: Text(widget.title),
+				backgroundColor: Colors.indigo,
 			),
 			body: FutureBuilder<Map<String, dynamic>?>(future: draftModel.getDraftByUid(widget.id), builder: (context, snapshot) {
 
 				if(snapshot.connectionState == ConnectionState.waiting) {
 					return const CircularProgressIndicator();
 				} else if(snapshot.hasError) {
-					return Text('Error: ${snapshot.error}');
+					return Center(
+						child: Text(
+							'Error getting draft by uuid:\n ${snapshot.error}',
+							style: TextStyle(fontSize: 18)
+						),
+					);
 				} else if(!snapshot.hasData || snapshot.data!.isEmpty) {
-					return const Text('No hay nada que coincida');
+					return Center(
+						child: Text(
+							'Sin coincidencias!',
+							style: TextStyle(fontSize: 24)
+						),
+					);
 				}
 
-				draftUuidController.text  = snapshot.data!['uuid'];
-				draftController.text      = snapshot.data!['draft'];
-				draftSavedController.text = snapshot.data!['saved'];
+				txtUuid.text  = snapshot.data!['uuid'];
+				txtDraft.text = snapshot.data!['draft'];
+				txtSaved.text = snapshot.data!['saved'];
 
 				return Padding(
 					padding: const EdgeInsets.all(16.0),
 					child: Form(
-						key: draftForm,
+						key: formDraft,
 						child: ListView(
 							children: [
 								TextFormField(
-									controller: draftUuidController,
+									controller: txtUuid,
 									readOnly: true,
 								),
 								TextFormField(
-									controller: draftController,
+									controller: txtDraft,
 									maxLines: null,
 									keyboardType: TextInputType.multiline,
 								),
 								TextFormField(
-									controller: draftSavedController,
+									controller: txtSaved,
 									readOnly: true,
 								),
 								const SizedBox(height: 20),
 								ElevatedButton(
 									onPressed: () async {
-										if (draftForm.currentState!.validate()) {
-											saveEditedDraft(snapshot.data!['uuid'], draftController.text);
+										if (formDraft.currentState!.validate()) {
+											saveEditedDraft(snapshot.data!['uuid'], txtDraft.text);
 										}
 									},
 									child: const Icon(Icons.edit),
@@ -107,7 +117,7 @@ class View extends State<EditDraftView> {
 			Toastify.show(
 				context,
 				title: 'Fallo!',
-				message: 'Algo paso al guardar el sueño astral!',
+				message: 'Algo paso al modificar el sueño astral!',
 				type: ToastType.error,
 				style: ToastStyle.minimal,
 				showProgressBar: true,

@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:dreams/views/draft_view.dart';
-import 'package:dreams/views/dejavu_view.dart';
-
 import 'package:dreams/models/draft_model.dart';
-import 'package:dreams/models/draftdejavu_model.dart';
 
+import 'package:dreams/actions/add_draft.dart';
 import 'package:dreams/actions/edit_draft.dart';
-
-import 'package:dreams/entities/draftdejavu_entity.dart';
 
 import 'package:dreams/menu/settings.dart';
 
@@ -24,7 +19,6 @@ class Home extends StatefulWidget {
 class View extends State<Home> {
 
 	DraftModel draftModel    = DraftModel();
-	DraftDejavuModel ddModel = DraftDejavuModel();
 
 	@override
 	Widget build(BuildContext context) {
@@ -38,7 +32,7 @@ class View extends State<Home> {
 								context,
 								MaterialPageRoute(
 									builder: (context) => Settings(),
-								),
+								),//ENDS ROUTE
 							);//ENDS
 						},//ENDS ONSELECTED
 						itemBuilder: (context) => [
@@ -59,7 +53,7 @@ class View extends State<Home> {
 				} else if(snapshot.hasError) {
 					return Center(
 						child: Text('Error: ${snapshot.error}',
-							style: TextStyle(fontSize: 24),
+							style: TextStyle(fontSize: 18),
 						)
 					);
 				} else if(!snapshot.hasData || snapshot.data!.isEmpty) {
