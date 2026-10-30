@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:dreams/models/draft_model.dart';
 
+import 'package:dreams/entities/draft_entity.dart';
+
 import 'package:dreams/actions/add_draft.dart';
 import 'package:dreams/actions/edit_draft.dart';
 
@@ -18,7 +20,7 @@ class Home extends StatefulWidget {
 
 class View extends State<Home> {
 
-	DraftModel draftModel    = DraftModel();
+	DraftModel draftModel = DraftModel();
 
 	@override
 	Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class View extends State<Home> {
 				],//ENDS ACTIONS
 			),//ENDS APPBAR
 
-			body: FutureBuilder<List<DraftDejavuEntity>>(future: ddModel.getDD(), builder: (context, snapshot) {
+			body: FutureBuilder<List<DraftEntity>>(future: draftModel.getDrafts(), builder: (context, snapshot) {
 
 				if(snapshot.connectionState == ConnectionState.waiting) {
 					return const CircularProgressIndicator();
@@ -64,25 +66,25 @@ class View extends State<Home> {
 					);
 				}
 
-				final List<DraftDejavuEntity> ddEntities = snapshot.data!;
+				final List<DraftEntity> draftEntities = snapshot.data!;
 
 				return ListView.builder(
 
-					itemCount: ddEntities.length,
+					itemCount: draftEntities.length,
 					itemBuilder: (context, index) {
 
-						final DraftDejavuEntity ddEntity = ddEntities[index];
+						final DraftEntity draftEntity = draftEntities[index];
 
 						return Card(
 							child: Column(
 								mainAxisSize: .min,
 								children: <Widget>[
 									ListTile(
-										title: Text(ddEntity.draft),
-										subtitle: Text(ddEntity.saved),
+										title: Text(draftEntity.draft),
+										subtitle: Text(draftEntity.saved),
 									),
 									ListTile(
-										title: Text(ddEntity.dejavu),
+										title: Text(draftEntity.dejavu),
 									),
 									Row(
 										mainAxisAlignment: .end,
@@ -91,7 +93,7 @@ class View extends State<Home> {
 												icon: const Icon(Icons.edit),
 												label: const Text('Editar'),
 												onPressed: () {
-													goEditDraftView(ddEntity.uuid);
+													goEditDraftView(draftEntity.uuid);
 												}
 											),
 											const SizedBox(width: 8),
@@ -99,7 +101,7 @@ class View extends State<Home> {
 												icon: const Icon(Icons.light),
 												label: const Text('Cumplido/Deja-vu'),
 												onPressed: () {
-													goDejavuView(ddEntity.uuid);
+													goDejavuView(draftEntity.uuid);
 												},
 											),
 											const SizedBox(width: 8),
@@ -114,17 +116,20 @@ class View extends State<Home> {
 			floatingActionButton: FloatingActionButton(
 				onPressed: goToAddDraft,
 				tooltip: 'Añadir',
-				backgroundColor: Colors.orange,
+				backgroundColor: Colors.yellowAccent,
 				child: const Icon(Icons.add),
 			),//ENDS BUTTON
 		);//ENDS SCAFFOLD
 	}//ENDS @OVERRIDE WIDGET
 
+/*
+*FLOATACTIONBUTTON
+*/
 	void goToAddDraft() {
 		Navigator.push(
 			context,
 			MaterialPageRoute(
-				builder: (context) => DraftView(),
+				builder: (context) => AddDraftView(),
 			),
 		);
 	}
@@ -133,16 +138,7 @@ class View extends State<Home> {
 		Navigator.push(
 			context,
 			MaterialPageRoute(
-				builder: (context) => EditDraftView(title: 'Editar sueño', id: uuid),
-			),
-		);
-	}
-
-	void goDejavuView(String uuid) {
-		Navigator.push(
-			context,
-			MaterialPageRoute(
-				builder: (context) => DejavuView(title: 'Sueño/Advertencia', id: uuid),
+				builder: (context) => EditDraftView(id: uuid),
 			),
 		);
 	}

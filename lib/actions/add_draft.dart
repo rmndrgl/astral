@@ -10,14 +10,14 @@ import 'package:dreams/models/draft_model.dart';
 
 import 'package:dreams/entities/draft_entity.dart';
 
-class DraftView extends StatefulWidget {
-	const DraftView({super.key});
+class AddDraftView extends StatefulWidget {
+	const AddDraftView({super.key});
 
 	@override
-	State<DraftView> createState() => View();
+	State<AddDraftView> createState() => View();
 }
 
-class View extends State<DraftView> {
+class View extends State<AddDraftView> {
 
 	DraftModel draftModel = DraftModel();
 

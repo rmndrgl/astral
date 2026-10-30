@@ -23,9 +23,9 @@ class DraftModel {
 	Future<Map<String, dynamic>?> getDraftByUid(String uuid) async {
 		final db = await sqlt.getDB();
 
-		final result = await db.query('drafts', where: 'uuid = ?', whereArgs: [uuid],);
+		final rows = await db.query('drafts', where: 'uuid = ?', whereArgs: [uuid],);
 
-		return result.isNotEmpty ? result.first : null;
+		return rows.isNotEmpty ? rows.first : null;
 	}
 
 	Future<int> editDraftByUid(String uuid, String draft) async {
@@ -42,9 +42,9 @@ class DraftModel {
 	Future<Map<String, dynamic>?> getDejavuByUid(String uuid) async {
 		final db = await sqlt.getDB();
 
-		final result = await db.query('drafts', where: 'uuid = ?', whereArgs: [uuid],);
+		final rows = await db.query('drafts', where: 'uuid = ?', whereArgs: [uuid],);
 
-		return result.isNotEmpty ? result.first : null;
+		return rows.isNotEmpty ? rows.first : null;
 	}
 
 	Future<int> editDejavuByUid(String uuid, String draft) async {

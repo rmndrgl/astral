@@ -16,10 +16,10 @@ class DraftEntity {
 
 	factory DraftEntity.fromMap(Map<String, dynamic> map) {
 		return DraftEntity(
-			uuid:   map['uuid']    as String,
-			draft:  map['draft']   as String,
+			uuid:   map['uuid']   as String,
+			draft:  map['draft']  as String,
 			dejavu: map['dejavu'] as String,
-			saved:  map['saved']   as String,
+			saved:  map['saved']  as String,
 		);
 	}
 

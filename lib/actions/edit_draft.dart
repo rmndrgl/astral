@@ -9,11 +9,8 @@ import 'package:dreams/models/draft_model.dart';
 class EditDraftView extends StatefulWidget {
 	const EditDraftView({
 		super.key,
-		required this.title,
 		required this.id,
 	});
-
-	final String title;
 	final String id;
 
 	@override
@@ -34,7 +31,7 @@ class View extends State<EditDraftView> {
 	Widget build(BuildContext context) {
 		return Scaffold(
 			appBar: AppBar(
-				title: Text(widget.title),
+				title: Text('Editar sueño'),
 				backgroundColor: Colors.indigo,
 			),
 			body: FutureBuilder<Map<String, dynamic>?>(future: draftModel.getDraftByUid(widget.id), builder: (context, snapshot) {
