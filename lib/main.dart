@@ -19,8 +19,9 @@ class Astral extends StatelessWidget {
 			title: 'Astral',
 			theme: ThemeData(
 				appBarTheme: const AppBarTheme(
-					backgroundColor: Colors.cyan,
+					backgroundColor: Colors.blue,
 				),
+				scaffoldBackgroundColor: Colors.black,
 				colorScheme: .fromSeed(
 					seedColor: Colors.teal
 				),

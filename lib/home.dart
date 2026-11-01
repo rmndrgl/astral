@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:dreams/models/draft_model.dart';
+import 'package:astral/models/draft_model.dart';
 
-import 'package:dreams/entities/draft_entity.dart';
+import 'package:astral/entities/draft_entity.dart';
 
-import 'package:dreams/actions/add_draft.dart';
-import 'package:dreams/actions/edit_draft.dart';
+import 'package:astral/views/add_draft.dart';
+import 'package:astral/views/edit_draft.dart';
 
-import 'package:dreams/menu/settings.dart';
+import 'package:astral/settings/settings.dart';
 
 class Home extends StatefulWidget {
 	const Home({
@@ -93,16 +93,8 @@ class View extends State<Home> {
 												icon: const Icon(Icons.edit),
 												label: const Text('Editar'),
 												onPressed: () {
-													goEditDraftView(draftEntity.uuid);
+													goUpdateDraft(draftEntity.uuid);
 												}
-											),
-											const SizedBox(width: 8),
-											TextButton.icon(
-												icon: const Icon(Icons.light),
-												label: const Text('Cumplido/Deja-vu'),
-												onPressed: () {
-													goDejavuView(draftEntity.uuid);
-												},
 											),
 											const SizedBox(width: 8),
 										],//ENDS CHILDREN
@@ -114,18 +106,18 @@ class View extends State<Home> {
 				);//ENDS LISTVIEW
 			},),//ENDS BODY
 			floatingActionButton: FloatingActionButton(
-				onPressed: goToAddDraft,
+				onPressed: goInsertDraft,
 				tooltip: 'Añadir',
-				backgroundColor: Colors.yellowAccent,
+				backgroundColor: Colors.blue,
 				child: const Icon(Icons.add),
 			),//ENDS BUTTON
 		);//ENDS SCAFFOLD
 	}//ENDS @OVERRIDE WIDGET
 
-/*
-*FLOATACTIONBUTTON
-*/
-	void goToAddDraft() {
+	/*
+	*FLOATACTIONBUTTON
+	*/
+	void goInsertDraft() {
 		Navigator.push(
 			context,
 			MaterialPageRoute(
@@ -134,11 +126,14 @@ class View extends State<Home> {
 		);
 	}
 
-	void goEditDraftView(String uuid) {
+	/*
+	*ACTION INSIDE CARD
+	*/
+	void goUpdateDraft(String uuid) {
 		Navigator.push(
 			context,
 			MaterialPageRoute(
-				builder: (context) => EditDraftView(id: uuid),
+				builder: (context) => EditDraftView(uuid: uuid),
 			),
 		);
 	}
