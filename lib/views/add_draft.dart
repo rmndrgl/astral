@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:my_toastify/my_toastify.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -31,7 +31,7 @@ class View extends State<AddDraftView> {
 	Widget build(BuildContext context) {
 		return Scaffold(
 			appBar: AppBar(
-				title: const Text('¿Qué soñe?'),
+				title: const Text('Agregar'),
 			),
 			body: Card(
 				color: Colors.white,
@@ -40,10 +40,15 @@ class View extends State<AddDraftView> {
 					child: Form(
 						key: formDraft,
 						child: ListView(
+							shrinkWrap: true,
+							physics: const ClampingScrollPhysics(),
 							children: [
 								TextFormField(
 									controller: txtDraft,
-									decoration: const InputDecoration(labelText: '¿Qué recuerdas?'),
+									decoration: const InputDecoration(
+										labelText: '¿Qué recuerdas?',
+										border: InputBorder.none,
+									),
 									maxLines: null,
 									keyboardType: TextInputType.multiline,
 									validator: (value) {
@@ -84,24 +89,18 @@ class View extends State<AddDraftView> {
 		if (response > 0) {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home(),),);
 
-			Toastify.show(
-				context,
-				title: 'Ok',
-				message: 'Sueño astral guardado con éxito!',
-				type: ToastType.success,
-				style: ToastStyle.minimal,
-				showProgressBar: true,
+			showSimpleNotification(
+				const Text('Sueño astral guardado con éxito!'),
+				background: Colors.green,
+				position: NotificationPosition.top,
 			);
 		} else {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home(),),);
 
-			Toastify.show(
-				context,
-				title: 'Fallo!',
-				message: 'Algo paso al guardar el sueño astral!',
-				type: ToastType.error,
-				style: ToastStyle.minimal,
-				showProgressBar: true,
+			showSimpleNotification(
+				const Text('Algo paso al guardar el sueño astral!'),
+				background: Colors.orange,
+				position: NotificationPosition.top,
 			);
 		}
 

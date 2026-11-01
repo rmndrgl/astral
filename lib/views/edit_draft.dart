@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:my_toastify/my_toastify.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'package:astral/home.dart';
 
@@ -35,7 +35,7 @@ class View extends State<EditDraftView> {
 	Widget build(BuildContext context) {
 		return Scaffold(
 			appBar: AppBar(
-				title: Text('Editar sueño')
+				title: Text('Modificar')
 			),
 			body: FutureBuilder<List<DraftEntity>>(future: draftModel.getDraftByUid(widget.uuid), builder: (context, snapshot) {
 
@@ -71,23 +71,35 @@ class View extends State<EditDraftView> {
 						child: Form(
 							key: formDraft,
 							child: ListView(
+								shrinkWrap: true,
+								physics: const ClampingScrollPhysics(),
 								children: [
 									TextFormField(
 										controller: txtUuid,
+										decoration: InputDecoration(border: InputBorder.none),
 										readOnly: true,
 									),
 									TextFormField(
 										controller: txtDraft,
+										decoration: InputDecoration(
+											labelText: 'Astral',
+											border: InputBorder.none
+										),
 										maxLines: null,
 										keyboardType: TextInputType.multiline,
 									),
 									TextFormField(
 										controller: txtDejavu,
+										decoration: InputDecoration(
+											labelText: 'Dejavu',
+											border: InputBorder.none
+										),
 										maxLines: null,
 										keyboardType: TextInputType.multiline,
 									),
 									TextFormField(
 										controller: txtSaved,
+										decoration: InputDecoration(border: InputBorder.none),
 										readOnly: true,
 									),
 									const SizedBox(height: 20),
@@ -122,24 +134,18 @@ class View extends State<EditDraftView> {
 		if (response > 0) {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home(),),);
 
-			Toastify.show(
-				context,
-				title: 'Ok',
-				message: 'Sueño astral modificado con éxito!',
-				type: ToastType.warning,
-				style: ToastStyle.minimal,
-				showProgressBar: true,
+			showSimpleNotification(
+				const Text('Sueño astral modificado con éxito!'),
+				background: Colors.green,
+				position: NotificationPosition.top,
 			);
 		} else {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home(),),);
 
-			Toastify.show(
-				context,
-				title: 'Fallo!',
-				message: 'Algo paso al modificar el sueño astral!',
-				type: ToastType.error,
-				style: ToastStyle.minimal,
-				showProgressBar: true,
+			showSimpleNotification(
+				const Text('Algo paso al modificar el sueño astral!'),
+				background: Colors.orange,
+				position: NotificationPosition.top,
 			);
 		}
 	}

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:overlay_support/overlay_support.dart';
+
 import 'package:astral/models/draft_model.dart';
 
 import 'package:astral/entities/draft_entity.dart';
@@ -21,6 +23,15 @@ class Home extends StatefulWidget {
 class View extends State<Home> {
 
 	DraftModel draftModel = DraftModel();
+
+	late Future<List<DraftEntity>> updateView;
+
+	@override
+	void initState() {
+		super.initState();
+
+		updateView = draftModel.getDrafts();
+	}
 
 	@override
 	Widget build(BuildContext context) {
@@ -48,7 +59,7 @@ class View extends State<Home> {
 				],//ENDS ACTIONS
 			),//ENDS APPBAR
 
-			body: FutureBuilder<List<DraftEntity>>(future: draftModel.getDrafts(), builder: (context, snapshot) {
+			body: FutureBuilder<List<DraftEntity>>(future: updateView, builder: (context, snapshot) {
 
 				if(snapshot.connectionState == ConnectionState.waiting) {
 					return const CircularProgressIndicator();
@@ -97,6 +108,14 @@ class View extends State<Home> {
 												}
 											),
 											const SizedBox(width: 8),
+											TextButton.icon(
+												icon: const Icon(Icons.delete),
+												label: const Text('Borrar'),
+												onPressed: () {
+													deleteDraft(draftEntity.uuid);
+												}
+											),
+											const SizedBox(width: 8),
 										],//ENDS CHILDREN
 									),//ENDS ROW
 								],//ENDS LISTTITLE | ENDS ROW
@@ -127,7 +146,7 @@ class View extends State<Home> {
 	}
 
 	/*
-	*ACTION INSIDE CARD
+	*BOTTONS LIST IN CARDS
 	*/
 	void goUpdateDraft(String uuid) {
 		Navigator.push(
@@ -136,6 +155,32 @@ class View extends State<Home> {
 				builder: (context) => EditDraftView(uuid: uuid),
 			),
 		);
+	}
+
+	/*
+	*BOTTONS LIST IN CARDS
+	*/
+	Future<void> deleteDraft(String uuid) async {
+		int response = await draftModel.deleteDraftByUid(uuid);
+
+		if(response > 0){
+			setState(() {
+				updateView = draftModel.getDrafts();
+			});
+
+			showSimpleNotification(
+				const Text('Sueño astral eliminado!'),
+				background: Colors.yellow,
+				position: NotificationPosition.top,
+			);
+		}else{
+			showSimpleNotification(
+				const Text('Algo paso al borrar el sueño astral!'),
+				background: Colors.red,
+				position: NotificationPosition.top,
+			);
+		}
+
 	}
 
 }

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 import 'home.dart';
 
 Future<void> main() async {
 	WidgetsFlutterBinding.ensureInitialized();
 
-	runApp(const Astral());
+	runApp(
+		OverlaySupport.global(
+			child: const Astral()
+		)
+	);
 }
 
 class Astral extends StatelessWidget {
@@ -19,11 +24,11 @@ class Astral extends StatelessWidget {
 			title: 'Astral',
 			theme: ThemeData(
 				appBarTheme: const AppBarTheme(
-					backgroundColor: Colors.blue,
+					backgroundColor: Color(0xFFD73220),
 				),
-				scaffoldBackgroundColor: Colors.black,
+				scaffoldBackgroundColor: Color(0XFF384657),
 				colorScheme: .fromSeed(
-					seedColor: Colors.teal
+					seedColor: Color(0xFF206FD6)
 				),
 				useMaterial3: true,
 			),

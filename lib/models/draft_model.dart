@@ -34,4 +34,10 @@ class DraftModel {
 		return await db.update('drafts', draft.toMap(), where: 'uuid = ?', whereArgs: [draft.uuid],);
 	}
 
+	Future<int> deleteDraftByUid(String uuid) async {
+		final db = await sqlt.getDB();
+
+		return await db.delete('drafts', where: 'uuid = ?', whereArgs: [uuid],);
+	}
+
 }
