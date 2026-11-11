@@ -163,7 +163,7 @@ class View extends State<Home> {
 	Future<void> deleteDraft(String uuid) async {
 		int response = await draftModel.deleteDraftByUid(uuid);
 
-		if(response > 0){
+		if(response > 0) {
 			setState(() {
 				updateView = draftModel.getDrafts();
 			});
@@ -173,7 +173,7 @@ class View extends State<Home> {
 				background: Colors.yellow,
 				position: NotificationPosition.top,
 			);
-		}else{
+		} else {
 			showSimpleNotification(
 				const Text('Algo paso al borrar el sueño astral!'),
 				background: Colors.red,

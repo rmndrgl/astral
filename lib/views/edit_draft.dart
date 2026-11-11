@@ -11,6 +11,7 @@ import 'package:astral/entities/draft_entity.dart';
 class EditDraftView extends StatefulWidget {
 	const EditDraftView({
 		super.key,
+
 		required this.uuid,
 	});
 
