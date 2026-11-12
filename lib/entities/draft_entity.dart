@@ -32,9 +32,4 @@ class DraftEntity {
 		};
 	}
 
-	@override
-	String toString() {
-		return 'Draft { \n uuid: $uuid, \n draft: $draft, \n dejavu: $dejavu, \n saved: $saved,\n}';
-	}
-
 }

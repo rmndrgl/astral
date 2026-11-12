@@ -10,16 +10,16 @@ import 'package:astral/models/draft_model.dart';
 
 import 'package:astral/entities/draft_entity.dart';
 
-class AddDraftView extends StatefulWidget {
-	const AddDraftView({
+class AddDraft extends StatefulWidget {
+	const AddDraft({
 		super.key
 	});
 
 	@override
-	State<AddDraftView> createState() => View();
+	State<AddDraft> createState() => AddDraftView();
 }
 
-class View extends State<AddDraftView> {
+class AddDraftView extends State<AddDraft> {
 
 	DraftModel draftModel = DraftModel();
 

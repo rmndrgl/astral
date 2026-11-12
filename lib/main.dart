@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:overlay_support/overlay_support.dart';
 
-import 'home.dart';
+import 'package:astral/login.dart';
 
 Future<void> main() async {
 	WidgetsFlutterBinding.ensureInitialized();
@@ -24,15 +25,15 @@ class Astral extends StatelessWidget {
 			title: 'Astral',
 			theme: ThemeData(
 				appBarTheme: const AppBarTheme(
-					backgroundColor: Color(0xFFD73220),
+					backgroundColor: Color(0xFF6168AA),
 				),
-				scaffoldBackgroundColor: Color(0XFF384657),
+				scaffoldBackgroundColor: Colors.white,
 				colorScheme: .fromSeed(
-					seedColor: Color(0xFF206FD6)
+					seedColor: Color(0xFF6168AA)
 				),
 				useMaterial3: true,
 			),
-			home: const Home(),
+			home: const Login(),
 			debugShowCheckedModeBanner: false,
 		);
 	}

@@ -8,8 +8,8 @@ import 'package:astral/models/draft_model.dart';
 
 import 'package:astral/entities/draft_entity.dart';
 
-class EditDraftView extends StatefulWidget {
-	const EditDraftView({
+class EditDraft extends StatefulWidget {
+	const EditDraft({
 		super.key,
 
 		required this.uuid,
@@ -18,10 +18,10 @@ class EditDraftView extends StatefulWidget {
 	final String uuid;
 
 	@override
-	State<EditDraftView> createState() => View();
+	State<EditDraft> createState() => EditDraftView();
 }
 
-class View extends State<EditDraftView> {
+class EditDraftView extends State<EditDraft> {
 
 	DraftModel draftModel = DraftModel();
 
@@ -106,7 +106,7 @@ class View extends State<EditDraftView> {
 									const SizedBox(height: 20),
 									ElevatedButton(
 										onPressed: () async {
-											if (formDraft.currentState!.validate()) {
+											if(formDraft.currentState!.validate()) {
 												saveDraftAndGoHome();
 											}
 										},
@@ -127,12 +127,12 @@ class View extends State<EditDraftView> {
 			uuid:   txtUuid.text,
 			draft:  txtDraft.text,
 			dejavu: txtDejavu.text,
-			saved: 	txtSaved.text,
+			saved:  txtSaved.text,
 		);
 
 		int response = await draftModel.updateDraftByUid(draftEntity);
 
-		if (response > 0) {
+		if(response > 0) {
 			Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home(),),);
 
 			showSimpleNotification(

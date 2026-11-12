@@ -6,17 +6,25 @@ class Settings extends StatefulWidget {
 	});
 
 	@override
-	State<Settings> createState() => View();
+	State<Settings> createState() => SettingsView();
 }
 
-class View extends State<Settings> {
+class SettingsView extends State<Settings> {
 	@override
 	Widget build(BuildContext context) {
 		return Scaffold(
 			appBar: AppBar(
-				title: Text('Configuraciones'),
+				title: Text('Settings'),
 			),
-			body: Scaffold()
+			body: Center(
+				child: ListTile(
+					title: Text('Created with <3 by rmndrgl'),
+					subtitle: Text('...'),
+					onTap: () {
+						debugPrint('Go to github profile');
+					},
+				)
+			)
 		);
 	}
 }

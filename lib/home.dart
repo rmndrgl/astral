@@ -127,39 +127,30 @@ class View extends State<Home> {
 			floatingActionButton: FloatingActionButton(
 				onPressed: goInsertDraft,
 				tooltip: 'Añadir',
-				backgroundColor: Colors.blue,
+				backgroundColor: Color(0xFF6168AA),
 				child: const Icon(Icons.add),
 			),//ENDS BUTTON
 		);//ENDS SCAFFOLD
 	}//ENDS @OVERRIDE WIDGET
 
-	/*
-	*FLOATACTIONBUTTON
-	*/
 	void goInsertDraft() {
 		Navigator.push(
 			context,
 			MaterialPageRoute(
-				builder: (context) => AddDraftView(),
+				builder: (context) => AddDraft(),
 			),
 		);
 	}
 
-	/*
-	*BOTTONS LIST IN CARDS
-	*/
 	void goUpdateDraft(String uuid) {
 		Navigator.push(
 			context,
 			MaterialPageRoute(
-				builder: (context) => EditDraftView(uuid: uuid),
+				builder: (context) => EditDraft(uuid: uuid),
 			),
 		);
 	}
 
-	/*
-	*BOTTONS LIST IN CARDS
-	*/
 	Future<void> deleteDraft(String uuid) async {
 		int response = await draftModel.deleteDraftByUid(uuid);
 
@@ -180,7 +171,6 @@ class View extends State<Home> {
 				position: NotificationPosition.top,
 			);
 		}
-
 	}
 
 }
