@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'package:overlay_support/overlay_support.dart';
 
@@ -39,25 +39,20 @@ class View extends State<Home> {
 			appBar: AppBar(
 				title: Text('Sueños'),
 				actions: [
-					PopupMenuButton(
-						onSelected: (value) {
+					IconButton(
+						icon: const Icon(Icons.settings),
+						tooltip: 'Settings',
+						onPressed: () {
 							Navigator.push(
 								context,
 								MaterialPageRoute(
-									builder: (context) => Settings(),
-								),//ENDS ROUTE
-							);//ENDS
-						},//ENDS ONSELECTED
-						itemBuilder: (context) => [
-							const PopupMenuItem<int>(
-								value: 1,
-								child: Icon(Icons.settings),
-							),//ENDS POPUPMENUITEM
-						],// ENDS ITEMBIULDER
-						icon: const Icon(Icons.more_vert),
-					),//ENDS POPUPMENUBUTTON
-				],//ENDS ACTIONS
-			),//ENDS APPBAR
+									builder: (context) => const Settings(),
+								),
+							);
+						},
+					),
+				],
+			),
 
 			body: FutureBuilder<List<DraftEntity>>(future: updateView, builder: (context, snapshot) {
 
@@ -127,7 +122,7 @@ class View extends State<Home> {
 			floatingActionButton: FloatingActionButton(
 				onPressed: goInsertDraft,
 				tooltip: 'Añadir',
-				backgroundColor: Color(0xFF6168AA),
+				backgroundColor: Color(0xFF437A9C),
 				child: const Icon(Icons.add),
 			),//ENDS BUTTON
 		);//ENDS SCAFFOLD
