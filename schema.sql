@@ -1,0 +1,9 @@
+CREATE TABLE drafts (
+	uuid   TEXT PRIMARY KEY,
+	draft  TEXT,
+	dejavu TEXT,
+	saved  DATETIME,
+	created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+	UNIQUE(uuid)
+);
