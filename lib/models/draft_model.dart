@@ -15,7 +15,7 @@ class DraftModel {
 	Future<List<DraftEntity>> getDrafts() async {
 		final db = await sqlt.getDB();
 
-		final List<Map<String, Object?>> drafts = await db.query('drafts',);
+		final List<Map<String, Object?>> drafts = await db.query('drafts', orderBy: 'uuid DESC');
 
 		return drafts.map((map) => DraftEntity.fromMap(map)).toList();
 	}

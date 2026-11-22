@@ -1,55 +1,62 @@
 import 'dart:convert';
+
 import 'dart:developer' as developer;
+
 import 'dart:typed_data';
 
 import 'package:astral/core/database/sqlt3.dart';
+
 import 'package:file_picker/file_picker.dart';
+
 import 'package:intl/intl.dart';
 
 class BackupService {
-  final SQLlt3 _sqlt;
 
-  BackupService({SQLlt3? sqlt}) : _sqlt = sqlt ?? SQLlt3();
+	final SQLlt3 sql3;
 
-  /// Exporta las filas de 'drafts' y abre el selector nativo para guardar el JSON.
-  /// Devuelve el [Uri] donde se guardó, o `null` si el usuario canceló.
-  Future<Uri?> backupDrafts() async {
-    try {
-      final db = await _sqlt.getDB();
-      final List<Map<String, dynamic>> drafts = await db.query('drafts');
+	BackupService({SQLlt3? sqlt}) : sql3 = sqlt ?? SQLlt3();
 
-      final now = DateTime.now();
-      final backupData = {
-        'version': 1,
-        'exported_at': now.toIso8601String(),
-        'total_records': drafts.length,
-        'drafts': drafts,
-      };
+	Future<Uri?> backupDrafts() async {
+		try {
+			final db = await sql3.getDB();
 
-      final String jsonString = const JsonEncoder.withIndent('  ').convert(backupData);
-      final Uint8List fileBytes = Uint8List.fromList(utf8.encode(jsonString));
+			final List<Map<String, dynamic>> drafts = await db.query('drafts');
 
-      final String timestamp = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
-      final String fileName = 'drafts_backup_$timestamp.json';
+			final now = DateTime.now();
 
-      // Llamada directa a FilePicker.saveFile (sin .platform)
-      final Uri? savedUri = await FilePicker.saveFile(
-        dialogTitle: 'Guardar respaldo de borradores',
-        fileName: fileName,
-        type: FileType.custom,
-        allowedExtensions: ['json'],
-        bytes: fileBytes,
-      );
+			final backupData = {
+				'version':       1,
+				'exported_at':   now.toIso8601String(),
+				'total_records': drafts.length,
+				'drafts':        drafts,
+			};
 
-      return savedUri;
-    } catch (e, stackTrace) {
-      developer.log(
-        'Error al generar el respaldo con FilePicker',
-        error: e,
-        stackTrace: stackTrace,
-        name: 'BackupService',
-      );
-      rethrow;
-    }
-  }
+			final String jsonString = const JsonEncoder.withIndent('\t').convert(backupData);
+
+			final Uint8List fileBytes = Uint8List.fromList(utf8.encode(jsonString));
+
+			final String timestamp = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
+
+			final String fileName = 'drafts_backup_$timestamp.json';
+
+			final Uri? savedUri = await FilePicker.saveFile(
+				dialogTitle:       'Saving backup',
+				fileName:          fileName,
+				type:              FileType.custom,
+				allowedExtensions: ['json'],
+				bytes:             fileBytes,
+			);
+
+			return savedUri;
+		} catch (e, stackTrace) {
+			developer.log(
+				'FilePicker error',
+				error: e,
+				stackTrace: stackTrace,
+				name: 'BackupService -> backupDrafts()',
+			);
+			rethrow;
+		}
+	}
+
 }

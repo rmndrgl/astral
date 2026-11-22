@@ -17,27 +17,9 @@ class Settings extends StatefulWidget {
 
 class SettingsView extends State<Settings> {
 
-	final BackupService _backupService = BackupService();
-	bool _isBackingUp = false;
+	final BackupService bckpsrvc = BackupService();
 
-	Future<void> _onBackupPressed() async {
-		if (_isBackingUp) return;
-			setState(() => _isBackingUp = true);
-			try {
-				final Uri? resultUri = await _backupService.backupDrafts();
-			if (resultUri != null) {
-				toast('Respaldo guardado correctamente');
-			} else {
-				toast('Respaldo cancelado');
-			}
-		} catch (e) {
-			toast('Error al crear el respaldo');
-		} finally {
-			if (mounted) {
-				setState(() => _isBackingUp = false);
-			}
-		}
-	}
+	bool isBackingup = false;
 
 	@override
 	Widget build(BuildContext context) {
@@ -50,13 +32,13 @@ class SettingsView extends State<Settings> {
 					ListTile(
 						title: Text('Make backup'),
 						subtitle: Text('Internal storage'),
-						trailing: _isBackingUp ? const SizedBox(
+						trailing: isBackingup ? const SizedBox(
 							width: 20,
 							height: 20,
 							child: CircularProgressIndicator(strokeWidth: 2),
 						)
 						: const Icon(Icons.chevron_right),
-						onTap: _isBackingUp ? null : _onBackupPressed,
+						onTap: isBackingup ? null : onBackupPressed,
 
 					),
 					Divider(thickness: 1,),
@@ -93,6 +75,25 @@ class SettingsView extends State<Settings> {
 				],
 			),
 		);
+	}
+
+	Future<void> onBackupPressed() async {
+		if(isBackingup) return;
+			setState(() => isBackingup = true);
+			try{
+				final Uri? resultUri = await bckpsrvc.backupDrafts();
+				if(resultUri != null) {
+					toast('Bakup ok!');
+				} else {
+					toast('Backup cancelled!');
+				}
+			} catch(e) {
+				toast('Error in backing up!');
+			} finally {
+				if(mounted) {
+					setState(() => isBackingup = false);
+				}
+			}
 	}
 
 	Future<void> launchInBrowser() async {
