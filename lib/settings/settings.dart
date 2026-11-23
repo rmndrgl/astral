@@ -20,6 +20,7 @@ class SettingsView extends State<Settings> {
 	final BackupService bckpsrvc = BackupService();
 
 	bool isBackingup = false;
+	bool isRestoring = false;
 
 	@override
 	Widget build(BuildContext context) {
@@ -38,16 +39,20 @@ class SettingsView extends State<Settings> {
 							child: CircularProgressIndicator(strokeWidth: 2),
 						)
 						: const Icon(Icons.chevron_right),
-						onTap: isBackingup ? null : onBackupPressed,
+						onTap: isBackingup || isRestoring ? null : onBackupPressed,
 
 					),
 					Divider(thickness: 1,),
 					ListTile(
 						title: Text('Restore backup'),
 						subtitle: Text('Internal storage'),
-						onTap: () {
-							toast('Restore backup ');
-						},
+						trailing: isRestoring ? const SizedBox(
+							width: 20,
+							height: 20,
+							child: CircularProgressIndicator(strokeWidth: 2),
+						)
+						: const Icon(Icons.chevron_right),
+						onTap: isBackingup || isRestoring ? null : onRestorePressed,
 					),
 					Divider(thickness: 1,),
 					ListTile(
@@ -78,22 +83,41 @@ class SettingsView extends State<Settings> {
 	}
 
 	Future<void> onBackupPressed() async {
-		if(isBackingup) return;
-			setState(() => isBackingup = true);
-			try{
-				final Uri? resultUri = await bckpsrvc.backupDrafts();
-				if(resultUri != null) {
-					toast('Bakup ok!');
-				} else {
-					toast('Backup cancelled!');
-				}
-			} catch(e) {
-				toast('Error in backing up!');
-			} finally {
-				if(mounted) {
-					setState(() => isBackingup = false);
-				}
+		if(isBackingup || isRestoring) return;
+		setState(() => isBackingup = true);
+		try{
+			final Uri? resultUri = await bckpsrvc.backupDrafts();
+			if(resultUri != null) {
+				toast('Bakup ok!');
+			} else {
+				toast('Backup cancelled!');
 			}
+		} catch(e) {
+			toast('Error in backing up!');
+		} finally {
+			if(mounted) {
+				setState(() => isBackingup = false);
+			}
+		}
+	}
+
+	Future<void> onRestorePressed() async {
+		if(isBackingup || isRestoring) return;
+		setState(() => isRestoring = true);
+		try {
+			final int count = await bckpsrvc.restoreDrafts();
+			if(count > 0) {
+				toast('Restored $count drafts!');
+			} else {
+				toast('Restore cancelled!');
+			}
+		} catch(e) {
+			toast('Error restoring backup!');
+		} finally {
+			if(mounted) {
+				setState(() => isRestoring = false);
+			}
+		}
 	}
 
 	Future<void> launchInBrowser() async {
