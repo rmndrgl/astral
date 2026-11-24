@@ -36,7 +36,6 @@ class AddDraftView extends State<AddDraft> {
 				title: const Text('Agregar'),
 			),
 			body: Card(
-				color: Colors.white,
 				child: Padding(
 					padding: const EdgeInsets.all(16.0),
 					child: Form(
@@ -68,14 +67,14 @@ class AddDraftView extends State<AddDraft> {
 										}
 									},
 									child: const Icon(Icons.save),
-								),//ENDS ELEVATEBUTTON
+								),
 							],
-						),//ENDS LISTVIEW
-					),//ENDS FORM
-				),//ENDS PADDING
-			),//ENDS CARD
-		);//ENDS SCAFFOLD
-	}//ENDS @OVERRIDE WIDGET
+						),
+					),
+				),
+			),
+		);
+	}
 
 	Future<void> saveDraftAndGoHome() async {
 

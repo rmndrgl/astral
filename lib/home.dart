@@ -2,6 +2,8 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:overlay_support/overlay_support.dart';
 
+import 'package:astral/themes/theme_controller.dart';
+
 import 'package:astral/models/draft_model.dart';
 
 import 'package:astral/entities/draft_entity.dart';
@@ -21,7 +23,6 @@ class Home extends StatefulWidget {
 }
 
 class View extends State<Home> {
-
 	DraftModel draftModel = DraftModel();
 
 	late Future<List<DraftEntity>> updateView;
@@ -35,10 +36,19 @@ class View extends State<Home> {
 
 	@override
 	Widget build(BuildContext context) {
+		final isDark = Theme.of(context).brightness == Brightness.dark;
+
 		return Scaffold(
 			appBar: AppBar(
 				title: Text('Sueños'),
 				actions: [
+					IconButton(
+						icon: Icon(
+							isDark ? Icons.light_mode : Icons.dark_mode,
+					),
+					tooltip: isDark ? 'Modo claro' : 'Modo oscuro',
+					onPressed: () => themeNotifier.toggleTheme(isDark),
+					),
 					IconButton(
 						icon: const Icon(Icons.settings),
 						tooltip: 'Settings',
@@ -111,22 +121,21 @@ class View extends State<Home> {
 												}
 											),
 											const SizedBox(width: 8),
-										],//ENDS CHILDREN
-									),//ENDS ROW
-								],//ENDS LISTTITLE | ENDS ROW
-							),//ENDS COLUMN
-						);//ENDS CARD
-					},//ENDS ITEMBIULDER
-				);//ENDS LISTVIEW
-			},),//ENDS BODY
+										],
+									),
+								],
+							),
+						);
+					},
+				);
+			},),
 			floatingActionButton: FloatingActionButton(
 				onPressed: goInsertDraft,
 				tooltip: 'Añadir',
-				backgroundColor: Color(0xFF437A9C),
 				child: const Icon(Icons.add),
 			),//ENDS BUTTON
-		);//ENDS SCAFFOLD
-	}//ENDS @OVERRIDE WIDGET
+		);
+	}
 
 	void goInsertDraft() {
 		Navigator.push(

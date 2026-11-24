@@ -66,7 +66,6 @@ class EditDraftView extends State<EditDraft> {
 				txtSaved.text  = draftEntities.first.saved;
 
 				return Card(
-					color: Colors.white,
 					child: Padding(
 						padding: const EdgeInsets.all(16.0),
 						child: Form(
@@ -111,15 +110,15 @@ class EditDraftView extends State<EditDraft> {
 											}
 										},
 										child: const Icon(Icons.edit),
-									),//ENDS ELEVATEBUTTON
+									),
 								],
-							),//ENDS LISTVIEW
-						),//ENDS FORM
-					),//ENDS PADDING
-				);//ENDS CARD
-			})//ENDS FUTUREBIULDER
-		);//ENDS SCAFFOLD
-	}//ENDS @OVERRIDE WIDGET
+							),
+						),
+					),
+				);
+			})
+		);
+	}
 
 	Future<void> saveDraftAndGoHome() async {
 
